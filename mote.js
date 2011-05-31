@@ -33,8 +33,21 @@ Object.extend(Mote.prototype, {
 		}
 	}
 	
+	start: function() {
+		this.availableClusters = [];
+		MoteList.send( this, { sender: this.id, type: MTYPE.WHOISTHERE });
+		window.setTimeout( this.selectCluster.bind(this), 500*timeScale );
+	},
+
+
+	clusterSort: function( c1, c2 ) {
+		return c1.size - c2.size;
+	},
+
+	
 });
 	
+
 
 MTYPE = {
 	WHOISTHERE: 1,
