@@ -1,0 +1,8 @@
+clicky zum loeschen und iwann evtl einfuegen
+behandlung des verlierens von nodes
+praesentation und demo am Mittwoch
+--
+
+behandlung des verlierens von clusterheads
+rotation des clusterheads
+
