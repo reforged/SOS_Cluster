@@ -8,7 +8,7 @@ function Mote() {
 	MoteList.register(this); // get my ID 
 	this.start();
 }
-Object.extend(Mote.prototype, {
+$.extend(Mote.prototype, {
 	
 	onRecv: function( msg ) {	
 		switch ( msg.type ) {
@@ -31,15 +31,14 @@ Object.extend(Mote.prototype, {
 				this.onJoinReqRes( msg );
 				break;
 		}
-	}
+	},
 	
 	start: function() {
 		this.availableClusters = [];
 		MoteList.send( this, { sender: this.id, type: MTYPE.WHOISTHERE });
 		window.setTimeout( this.selectCluster.bind(this), 500*timeScale );
 	},
-
-
+	
 	clusterSort: function( c1, c2 ) {
 		return c1.size - c2.size;
 	},
@@ -55,5 +54,6 @@ MTYPE = {
 	LISTMEMBERS: 3,
 	RE_LISTMEMBERS: 4,
 	JOINREQ: 5,
-	RE_JOINREQ: 6
+	RE_JOINREQ: 6,
+	MOTE_GONE: 7,
 }

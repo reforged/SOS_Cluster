@@ -1,4 +1,4 @@
-Object.extend( Mote.prototype, {
+$.extend( Mote.prototype, {
 	
 	// if JOINING
 	onWhoIsThereRes: function( msg ) {

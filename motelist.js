@@ -106,11 +106,39 @@ MoteList = (function() {
 		}
 		return clusters;
 	}
-
+	
+	/* private */
+	function getMoteAt( x, y ) {
+		for ( var i = 0; i < motes.length; i++ ) {
+			var mote = motes[i];
+			if ( Math.abs(mote.x - x) <= 1 && Math.abs(mote.y - y) <= 1 )
+				return mote;
+		}
+		return null;
+	}
+	
+	/* private */
+	function killMote( mote ) {
+		send( mote.mote, {
+			type: MOTE_GONE,
+			clusterId: mote.mote.ClusterId,
+			sender: mote.mote.id,
+		})
+		motes.splice( motes.indexOf(mote), 1 );
+		dist[mote.mote.id] = undefined;
+		for ( var i = 0; i < motes.length; i++)
+			dist[motes[i].mote.id][mote.mote.id] = undefined;
+	}
+	
+	function killMoteAt( x, y) {
+		killMote( getMoteAt( x, y ) );
+	}
+	
 	return {
 		register: register,
 		drawAll: drawAll,
 		send: send,
-		getClusters: getClusters
+		getClusters: getClusters,
+		killMote: killMote,
 	}
 }());

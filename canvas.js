@@ -6,6 +6,9 @@ function init_canvas() {
 	_canvas.id = 'display';
 	_canvas.width = SCREENSIZE;
 	_canvas.height = SCREENSIZE;
+	$(_canvas).click(function( e ) {
+		console.debug(e);
+	});
 	body.appendChild(_canvas);
 	canvas = _canvas.getContext('2d');
 }
