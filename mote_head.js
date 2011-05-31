@@ -55,13 +55,5 @@ Object.extend( Mote.prototype, {
 		this.clusterId = this.id;
 		this.clusterMotes = [this.id];
 	}
-	// ===========================
-	
-	newCluster: function() {
-		console.debug(this.id, 'starting new cluster');
-		this.isClusterHead = true;
-		this.clusterId = this.id;
-		this.clusterMotes = [this.id];
-	}
 	
 });
