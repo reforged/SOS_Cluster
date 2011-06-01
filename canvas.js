@@ -9,8 +9,8 @@ function init_canvas() {
 	$(_canvas).click(function( e ) {
         var x = e.pageX - $(this).offset().left;
         var y = e.pageY - $(this).offset().top;
-        MoteList.killMoteAt(x,y);
-	    console.debug(x,y);
+        if ( !MoteList.killMoteAt(x,y) )
+			console.debug( "no mote found" );
 	});
 	body.appendChild(_canvas);
 	canvas = _canvas.getContext('2d');

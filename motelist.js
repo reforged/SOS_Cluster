@@ -111,8 +111,7 @@ MoteList = (function() {
     function getMoteAt( x, y ) {
 		for ( var i = 0; i < motes.length; i++ ) {
 			var mote = motes[i];
-            console.debug( mote );
-			if ( Math.abs(mote.x - x) <= 5 && Math.abs(mote.y - y) <= 5 )
+			if ( Math.abs(mote.x - x) <= 3 && Math.abs(mote.y - y) <= 3 )
 				return mote;
 		}
 		return null;
@@ -121,10 +120,10 @@ MoteList = (function() {
     /* private */
     function killMote( mote ) {
 		send( mote.mote, {
-			type: MOTE_GONE,
+			type: MTYPE.MOTE_GONE,
 			clusterId: mote.mote.ClusterId,
 			sender: mote.mote.id,
-		})
+		});
 		motes.splice( motes.indexOf(mote), 1 );
 		dist[mote.mote.id] = undefined;
 		for ( var i = 0; i < motes.length; i++)
@@ -133,11 +132,13 @@ MoteList = (function() {
 
     function killMoteAt( x, y) {
         mote = getMoteAt( x, y );
-        if( mote != null ) {
-            console.debug( "(x,y):",x,y,mote );
-            killMote( mote );
-        } else
-            console.debug( "no mote found here" );
+        if( mote == null )
+			return false;
+
+        killMote( mote );
+		draw();
+		return true;
+
     }
 
     return {

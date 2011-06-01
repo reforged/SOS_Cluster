@@ -90,7 +90,4 @@ $.extend( Mote.prototype, {
 			motes:this.joiningMemberList
 		})
 	},
-
-
-
 });

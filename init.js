@@ -1,8 +1,8 @@
 
-var numNodes = 2;
-var maxDist = 0.15;
-var timeScale = 1/8;
+var numNodes = 50;
+var timeScale = 1/4;
 var SCREENSIZE = 800;
+var maxDist = 0.15*SCREENSIZE;
 
 function draw()
 {
