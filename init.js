@@ -1,19 +1,19 @@
 
-var numNodes = 180;
+var numNodes = 2;
 var maxDist = 0.15;
-var timeScale = 1/4;
+var timeScale = 1/8;
 var SCREENSIZE = 800;
 
 function draw()
 {
 	canvas.fillStyle = '#0c1021';
 	canvas.fillRect(0,0,SCREENSIZE,SCREENSIZE);
-	
+
 	canvas.font = 'bold 14px Monaco, monospace';
 	//canvas.textAlign = 'left';
 	//canvas.fillStyle = 'white';
 	//canvas.fillText('Selbstorganisierende Systeme',10,21);
-	
+
 	MoteList.drawAll();
 }
 

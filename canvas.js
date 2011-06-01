@@ -7,7 +7,10 @@ function init_canvas() {
 	_canvas.width = SCREENSIZE;
 	_canvas.height = SCREENSIZE;
 	$(_canvas).click(function( e ) {
-		console.debug(e);
+        var x = e.pageX - $(this).offset().left;
+        var y = e.pageY - $(this).offset().top;
+        MoteList.killMoteAt(x,y);
+	    console.debug(x,y);
 	});
 	body.appendChild(_canvas);
 	canvas = _canvas.getContext('2d');

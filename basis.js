@@ -73,12 +73,12 @@ function $(elm)
 		elm=document.getElementById(elm);
 	if (elm)
 		if (!elm._extended)
-			elm.extend(ElementUtils);    
+			elm.extend(ElementUtils);
 	return elm;
 }
 
 if ( !Array.prototype.indexOf )
-Array.prototype.indexOf = function(search)
+	Array.prototype.indexOf = function(search)
 {
 	for (var i = 0; i < this.length; i++)
 		if (this[i]==search) return i;
@@ -112,7 +112,7 @@ Effects.Highlight = function()
 		this.pos = 0;
 		setTimeout(this.nextPos.bind(this) ,50);
 	}
-	
+
 	this.nextPos = function()
 	{
 		var rgb = posColor(this.pos/this.steps, this.start, this.end);
@@ -121,7 +121,7 @@ Effects.Highlight = function()
 		if (this.pos<=this.steps) setTimeout(this.nextPos.bind(this),50);
 		else if (this.options.onComplete) this.options.onComplete();
 	}
-	
+
 	this.init.apply(this, arguments);
 }
 
@@ -165,7 +165,7 @@ Ajax.Request = function(url, options)
 	if (postBody!=null)
 		XMLHttp.setRequestHeader('Content-length', postBody.length);
 	XMLHttp.send(postBody);
-	
+
 	XMLHttp.onreadystatechange = function()
 	{
 		if (XMLHttp.readyState == 4)
@@ -176,70 +176,70 @@ Ajax.Request = function(url, options)
 				if (options.onComplete) options.onComplete(XMLHttp);
 			}
 			else
-				{ if (options.onFailure) options.onFailure(XMLHttp); }
+			{ if (options.onFailure) options.onFailure(XMLHttp); }
 		}
 	}
 }
 
 
 /**
-* Retrieve the coordinates of the given event relative to the center
-* of the widget.
-*
-* @param event
-*   A mouse-related DOM event.
-* @param reference
-*   A DOM element whose position we want to transform the mouse coordinates to.
-* @return
-*    A hash containing keys 'x' and 'y'.
-*/
+ * Retrieve the coordinates of the given event relative to the center
+ * of the widget.
+ *
+ * @param event
+ *   A mouse-related DOM event.
+ * @param reference
+ *   A DOM element whose position we want to transform the mouse coordinates to.
+ * @return
+ *    A hash containing keys 'x' and 'y'.
+ */
 function getRelativeCoordinates( event, reference )
 {
 	var x, y;
 	event = event || window.event;
 	var el = event.target || event.srcElement;
-	
+
 	if (!window.opera && typeof event.offsetX != 'undefined') {
-	  // Use offset coordinates and find common offsetParent
-	  var pos = { x: event.offsetX, y: event.offsetY };
-	
-	  // Send the coordinates upwards through the offsetParent chain.
-	  var e = el;
-	  while (e) {
-		e.mouseX = pos.x;
-		e.mouseY = pos.y;
-		pos.x += e.offsetLeft;
-		pos.y += e.offsetTop;
-		e = e.offsetParent;
-	  }
-	
-	  // Look for the coordinates starting from the reference element.
-	  var e = reference;
-	  var offset = { x: 0, y: 0 }
-	  while (e) {
-		if (typeof e.mouseX != 'undefined') {
-		  x = e.mouseX - offset.x;
-		  y = e.mouseY - offset.y;
-		  break;
+		// Use offset coordinates and find common offsetParent
+		var pos = { x: event.offsetX, y: event.offsetY };
+
+		// Send the coordinates upwards through the offsetParent chain.
+		var e = el;
+		while (e) {
+			e.mouseX = pos.x;
+			e.mouseY = pos.y;
+			pos.x += e.offsetLeft;
+			pos.y += e.offsetTop;
+			e = e.offsetParent;
 		}
-		offset.x += e.offsetLeft;
-		offset.y += e.offsetTop;
-		e = e.offsetParent;
-	  }
-	
-	  // Reset stored coordinates
-	  e = el;
-	  while (e) {
-		e.mouseX = undefined;
-		e.mouseY = undefined;
-		e = e.offsetParent;
-	  }
+
+		// Look for the coordinates starting from the reference element.
+		var e = reference;
+		var offset = { x: 0, y: 0 }
+		while (e) {
+			if (typeof e.mouseX != 'undefined') {
+				x = e.mouseX - offset.x;
+				y = e.mouseY - offset.y;
+				break;
+			}
+			offset.x += e.offsetLeft;
+			offset.y += e.offsetTop;
+			e = e.offsetParent;
+		}
+
+		// Reset stored coordinates
+		e = el;
+		while (e) {
+			e.mouseX = undefined;
+			e.mouseY = undefined;
+			e = e.offsetParent;
+		}
 	}
 	else {
-	  // Use absolute coordinates
-	  var pos = getAbsolutePosition(reference);
-	  x = event.pageX  - pos.x;
-	  y = event.pageY - pos.y;
+		// Use absolute coordinates
+		var pos = getAbsolutePosition(reference);
+		x = event.pageX  - pos.x;
+		y = event.pageY - pos.y;
 	}
 	// Subtract distance to middle
 	return { x: x, y: y };
@@ -248,9 +248,9 @@ function getRelativeCoordinates( event, reference )
 function getAbsolutePosition(element) {
 	var r = { x: element.offsetLeft, y: element.offsetTop };
 	if (element.offsetParent) {
-	  var tmp = getAbsolutePosition(element.offsetParent);
-	  r.x += tmp.x;
-	  r.y += tmp.y;
+		var tmp = getAbsolutePosition(element.offsetParent);
+		r.x += tmp.x;
+		r.y += tmp.y;
 	}
 	return r;
 };
