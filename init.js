@@ -1,6 +1,6 @@
 
-var numNodes = 100;
-var timeScale = 1/2;
+var numNodes = 150;
+var timeScale = 1/4;
 var SCREENHEIGHT = 780;
 var SCREENWIDTH = SCREENHEIGHT/5*8;
 var maxDist = 0.15*SCREENHEIGHT;

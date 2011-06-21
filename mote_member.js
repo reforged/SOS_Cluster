@@ -58,8 +58,8 @@ $.extend( Mote.prototype, {
         if( msg.isClusterHead ) {
             console.log( "clusterhead is gone" );
             this.clusterId = null;
-            var t = newMoteSlot*timeScale*this.slot;
-            console.debug( this.id, "selecting new cluster in", t, "milliseconds" );
+            var t = newMoteSlot*1.5*timeScale*this.slot;
+            console.debug( this.id, 'selecting new cluster in', t, 'milliseconds' );
             window.setTimeout( this.start.bind(this), t );
             return;
         }
@@ -77,6 +77,7 @@ $.extend( Mote.prototype, {
 
         this.clusterId = msg.clusterId;
         this.clusterMotes = msg.clusterMotes;
+        this.nextClusterSlot = msg.nextClusterSlot;
         this.isClusterHead = true;
     },
     // ===========================

@@ -58,8 +58,15 @@ MoteList = (function() {
             }
         }
     }
+    
+    function mtypeToStr(type) {
+        for ( var name in MTYPE )
+            if (MTYPE[name] == type) return name;
+        return type.toString();
+    }
 
     function send( sender, msg ) {
+        console.debug('SEND type:', mtypeToStr(msg.type), ' msg:', JSON.stringify(msg));
         var sender = getMoteContainer(sender);
         if ( sender == null ) throw new Error('Unknown mote id');
 

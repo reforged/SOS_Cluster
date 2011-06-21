@@ -76,6 +76,7 @@ $.extend( Mote.prototype, {
             type: MTYPE.ROTATE,
             clusterId: this.clusterId,
             clusterMotes: this.clusterMotes,
+            nextClusterSlot: this.nextClusterSlot,
         });
 
         this.isClusterHead = false;
