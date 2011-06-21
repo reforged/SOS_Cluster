@@ -29,8 +29,6 @@ $.extend( Mote.prototype, {
 				break;
 			}
 
-		//console.debug(msg.sender,'joinReqRes knows all',knowsAll)
-
 		if ( knowsAll ) {
 			MoteList.send( this, {
 				type:MTYPE.RE_JOINREQ,
@@ -54,6 +52,27 @@ $.extend( Mote.prototype, {
 		this.isClusterHead = true;
 		this.clusterId = this.id;
 		this.clusterMotes = [this.id];
-	}
+	},
+
+	rotateHead: function() {
+		var i = Math.floor( Math.random() * this.clusterMotes.length );
+		console.log("i==", i);
+		var newHead = this.clusterMotes[i];
+		//special case
+		if( newHead.id == this.id )
+			newHead = this.clusterMotes[ (i+1) % this.clusterMotes.length ];
+
+		console.log( "rotating head to mote #", newHead );
+
+		MoteList.send( this, {
+			sender: this.id,
+			to:  newHead,
+			type: MTYPE.ROTATE,
+			clusterId: this.clusterId,
+			clusterMotes: this.clusterMotes,
+		});
+
+		this.isClusterHead = false;
+	},
 
 });

@@ -30,6 +30,10 @@ $.extend(Mote.prototype, {
 		case MTYPE.RE_JOINREQ:
 			this.onJoinReqRes( msg );
 			break;
+		case MTYPE.ROTATE:
+			console.log("in mtype rotate");
+			this.acceptClusterHead( msg );
+			break;
 		}
 	},
 
@@ -38,6 +42,15 @@ $.extend(Mote.prototype, {
 		MoteList.send( this, { sender: this.id, type: MTYPE.WHOISTHERE });
 		window.setTimeout( this.selectCluster.bind(this), 500*timeScale );
     },
+
+	shutdown: function( msg ) {
+		if( msg.sender != this.id )
+			return;
+
+		if( this.isClusterHead )
+			this.rotateHead();
+
+	},
 
     clusterSort: function( c1, c2 ) {
 		return c1.size - c2.size;
@@ -56,4 +69,5 @@ MTYPE = {
 	JOINREQ: 5,
 	RE_JOINREQ: 6,
 	MOTE_GONE: 7,
+	ROTATE: 8,
 }

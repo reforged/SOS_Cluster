@@ -88,6 +88,16 @@ $.extend( Mote.prototype, {
 			type:MTYPE.JOINREQ,
 			clusterId:this.joiningClusterId,
 			motes:this.joiningMemberList
-		})
+		});
+	},
+
+	//TODO: is this all?
+	acceptClusterHead: function( msg ) {
+		if( msg.to != this.id)
+			return;
+
+		this.clusterId = msg.clusterId;
+		this.clusterMotes = msg.clusterMotes;
+		this.isClusterHead = true;
 	},
 });

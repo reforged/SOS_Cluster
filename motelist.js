@@ -119,11 +119,13 @@ MoteList = (function() {
 
     /* private */
     function killMote( mote ) {
+		// send message to kill the mote.
 		send( mote.mote, {
 			type: MTYPE.MOTE_GONE,
 			clusterId: mote.mote.ClusterId,
 			sender: mote.mote.id,
 		});
+		// delete mote from internal list of existent motes and from caches
 		motes.splice( motes.indexOf(mote), 1 );
 		dist[mote.mote.id] = undefined;
 		for ( var i = 0; i < motes.length; i++)
