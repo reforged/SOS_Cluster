@@ -22,7 +22,7 @@ MoteList = (function() {
                 if ( getDist(m1,m2) > maxDist )
                     continue;
 
-                if ( m1.mote.clusterId == m2.mote.clusterId ) {
+                if ( m1.mote.clusterId == m2.mote.clusterId && m1.mote.clusterId != undefined ) {
                     activeEdges.push({m1:m1, m2:m2});
                     continue;
                 }
