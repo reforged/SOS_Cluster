@@ -60,7 +60,7 @@ $.extend( Mote.prototype, {
             this.clusterId = null;
             var t = newMoteSlot*1.5*timeScale*this.slot;
             console.debug( this.id, 'selecting new cluster in', t, 'milliseconds' );
-            window.setTimeout( this.start.bind(this), t );
+            window.setTimeout( $.proxy( this.start, this ), t );
             return;
         }
 
@@ -103,7 +103,7 @@ $.extend( Mote.prototype, {
                 type:MTYPE.LISTMEMBERS,
                 clusterId:cluster.id
             } );
-            window.setTimeout( this.joinReq.bind(this), 100*timeScale )
+            window.setTimeout( $.proxy( this.joinReq, this ), 100*timeScale )
         }
         else {
             this.joinReq();

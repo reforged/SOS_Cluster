@@ -44,7 +44,7 @@ $.extend(Mote.prototype, {
     start: function() {
         this.availableClusters = [];
         MoteList.send( this, { sender: this.id, type: MTYPE.WHOISTHERE });
-        window.setTimeout( this.selectCluster.bind(this), newMoteSlot*timeScale );
+        window.setTimeout( $.proxy( this.selectCluster, this ), newMoteSlot*timeScale );
     },
 
     clusterSort: function( c1, c2 ) {
