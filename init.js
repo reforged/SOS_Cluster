@@ -1,5 +1,5 @@
 
-var numNodes = 0;
+var numNodes = 100;
 var timeScale = 1/4;
 var SCREENSIZE = 800;
 var maxDist = 0.15*SCREENSIZE;

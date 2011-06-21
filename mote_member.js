@@ -43,6 +43,7 @@ $.extend( Mote.prototype, {
 
 	if ( msg.success ) {
 	    this.clusterId = msg.clusterId;
+	    this.slot = msg.slot;
 	    //console.debug(this.id, 'joining cluster', this.clusterId);
 	    draw();
 	}
@@ -60,7 +61,7 @@ $.extend( Mote.prototype, {
 	if( msg.isClusterHead ) {
 	    console.log( "clusterhead is gone" );
 	    this.clusterId = null;
-	    var t = 5000*timeScale*Math.random();
+	    var t = 500*timeScale*this.slot;
 	    console.debug( this.id, "selecting new cluster in", t, "milliseconds" );
 	    window.setTimeout( this.start.bind(this), t ); //TODO: head send list, and clients conform to order
 	    return;

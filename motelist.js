@@ -122,8 +122,8 @@ MoteList = (function() {
 	// send mote the message that it is gone
 	send( mote.mote, {
 	    type: MTYPE.MOTE_GONE,
-	    clusterId: mote.mote.clusterId,
-	    sender: mote.mote.id,
+	    colusterId: mote.mote.clusterId,
+	    soender: mote.mote.id,
 	    isClusterHead: mote.mote.isClusterHead,
 	});
 

@@ -2,9 +2,11 @@
 // Class Mote
 function Mote() {
     this.id = null; // my ID
+    this.slot = null;
     this.isClusterHead = false; // am I cluster head?
     this.clusterId = null; // the cluster I'm member or head of
-    this.clusterMotes = null; // only cluster head uses this
+    this.clusterMotes = null; // List of all member in the cluster; only cluster head uses this
+    this.nextClusterSlot = null; // The slot given to the next joining member; only clusterhead uses this
     MoteList.register(this); // get my ID
 }
 $.extend(Mote.prototype, {

@@ -36,6 +36,7 @@ $.extend( Mote.prototype, {
 		type:MTYPE.RE_JOINREQ,
 		clusterId: this.clusterId,
 		newMember: msg.sender,
+		slot: this.nextClusterSlot++,
 		success: true
 	    });
 	    this.clusterMotes.push( msg.sender );
@@ -53,6 +54,8 @@ $.extend( Mote.prototype, {
 	//console.debug(this.id, 'starting new cluster');
 	this.isClusterHead = true;
 	this.clusterId = this.id;
+	this.nextClusterSlot = 1;
+	this.slot = this.nextClusterSlot++;
 	this.clusterMotes = [this.id];
 	draw();
     }
