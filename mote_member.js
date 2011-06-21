@@ -1,103 +1,117 @@
 $.extend( Mote.prototype, {
 
-	// if JOINING
-	onWhoIsThereRes: function( msg ) {
-		this.availableClusters.push({
-			id:msg.clusterId,
-			head:msg.sender,
-			size:msg.size
-		});
-	},
+    // if JOINING
+    onWhoIsThereRes: function( msg ) {
+	this.availableClusters.push({
+	    id:msg.clusterId,
+	    head:msg.sender,
+	    size:msg.size
+	});
+    },
 
-	// if MEMBER
-	onListMembers: function( msg ) {
-		if ( this.isClusterHead )
-			return;
+    // if MEMBER
+    onListMembers: function( msg ) {
+	if ( this.isClusterHead )
+	    return;
 
-		if ( msg.clusterId != this.clusterId )
-			return;
+	if ( msg.clusterId != this.clusterId )
+	    return;
 
-		//console.debug(this.id,'I am member of',this.clusterId);
+	//console.debug(this.id,'I am member of',this.clusterId);
 
-		MoteList.send( this, {
-			sender:this.id,
-			type:MTYPE.RE_LISTMEMBERS,
-			clusterId:this.clusterId
-		})
-	},
+	MoteList.send( this, {
+	    sender:this.id,
+	    type:MTYPE.RE_LISTMEMBERS,
+	    clusterId:this.clusterId
+	})
+    },
 
-	// if JOINING
-	onListMembersRes: function( msg ) {
-		if ( msg.clusterId != this.joiningClusterId )
-			return;
+    // if JOINING
+    onListMembersRes: function( msg ) {
+	if ( msg.clusterId != this.joiningClusterId )
+	    return;
 
-		this.joiningMemberList.push( msg.sender );
-	},
+	this.joiningMemberList.push( msg.sender );
+    },
 
-	// if JOINING
-	onJoinReqRes: function( msg ) {
-		if ( msg.newMember != this.id )
-			return;
-		if ( msg.clusterId != this.joiningClusterId )
-			throw new Error('THIS SHOULD NOT HAPPEN!');
+    // if JOINING
+    onJoinReqRes: function( msg ) {
+	if ( msg.newMember != this.id )
+	    return;
+	if ( msg.clusterId != this.joiningClusterId )
+	    throw new Error('THIS SHOULD NOT HAPPEN!');
 
-		if ( msg.success ) {
-			this.clusterId = msg.clusterId;
-			//console.debug(this.id, 'joining cluster', this.clusterId);
-			draw();
-		}
-		else {
-			this.selectCluster();
-		}
-	},
+	if ( msg.success ) {
+	    this.clusterId = msg.clusterId;
+	    this.slot = msg.slot;
+	    //console.debug(this.id, 'joining cluster', this.clusterId);
+	    draw();
+	}
+	else {
+	    this.selectCluster();
+	}
+    },
 
-	// ===========================
 
-	selectCluster: function() {
-		if (this.availableClusters.length == 0) {
-			this.newCluster();
-			return;
-		}
+    onMoteGone: function( msg ) {
+	console.debug( "onMoteGone" , msg );
+	if( msg.clusterId != this.clusterId )  
+	    return;
 
-		//console.debug(this.id, 'available Clusters:', JSON.stringify(this.availableClusters));
+	if( msg.isClusterHead ) {
+	    console.log( "clusterhead is gone" );
+	    this.clusterId = null;
+	    var t = 500*timeScale*this.slot;
+	    console.debug( this.id, "selecting new cluster in", t, "milliseconds" );
+	    window.setTimeout( this.start.bind(this), t ); //TODO: head send list, and clients conform to order
+	    return;
+	}
 
-		this.availableClusters.sort(this.clusterSort);
+	if( this.isClusterHead ) {
+	    console.log( "clustermember is gone" );
+	    this.clusterMotes.splice( $.inArray( msg.sender, this.clusterMotes ), 1);
+	    return;
+	}
+    },
+    // ===========================
 
-		var cluster = this.availableClusters.shift();
-		//console.debug(this.id,'now trying to connect to cluster', cluster);
-		this.joiningClusterId = cluster.id;
-		this.joiningMemberList = [cluster.head];
-		if ( cluster.size > 1 ){
-			//console.debug(this.id,'listening for cluster members of cluster id',cluster.id);
-			MoteList.send( this, {
-				sender: this.id,
-				type:MTYPE.LISTMEMBERS,
-				clusterId:cluster.id
-			} );
-			window.setTimeout( this.joinReq.bind(this), 100*timeScale )
-		}
-		else {
-			this.joinReq();
-		}
-	},
+    selectCluster: function() {
+	if (this.availableClusters.length == 0) {
+	    this.newCluster();
+	    return;
+	}
 
-	joinReq: function () {
-		//console.debug( this.id, 'join Req to', this.joiningClusterId, 'members:', this.joiningMemberList );
-		MoteList.send( this, {
-			sender: this.id,
-			type:MTYPE.JOINREQ,
-			clusterId:this.joiningClusterId,
-			motes:this.joiningMemberList
-		});
-	},
+	//console.debug(this.id, 'available Clusters:', JSON.stringify(this.availableClusters));
 
-	//TODO: is this all?
-	acceptClusterHead: function( msg ) {
-		if( msg.to != this.id)
-			return;
+	this.availableClusters.sort(this.clusterSort);
 
-		this.clusterId = msg.clusterId;
-		this.clusterMotes = msg.clusterMotes;
-		this.isClusterHead = true;
-	},
+	var cluster = this.availableClusters.shift();
+	//console.debug(this.id,'now trying to connect to cluster', cluster);
+	this.joiningClusterId = cluster.id;
+	this.joiningMemberList = [cluster.head];
+	if ( cluster.size > 1 ){
+	    //console.debug(this.id,'listening for cluster members of cluster id',cluster.id);
+	    MoteList.send( this, {
+		sender: this.id,
+		type:MTYPE.LISTMEMBERS,
+		clusterId:cluster.id
+	    } );
+	    window.setTimeout( this.joinReq.bind(this), 100*timeScale )
+	}
+	else {
+	    this.joinReq();
+	}
+    },
+
+    joinReq: function () {
+	//console.debug( this.id, 'join Req to', this.joiningClusterId, 'members:', this.joiningMemberList );
+	MoteList.send( this, {
+	    sender: this.id,
+	    type:MTYPE.JOINREQ,
+	    clusterId:this.joiningClusterId,
+	    motes:this.joiningMemberList
+	})
+    },
+
+
 });
