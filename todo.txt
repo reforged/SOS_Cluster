@@ -1,8 +1,18 @@
-clicky zum loeschen und iwann evtl einfuegen
-behandlung des verlierens von nodes
-praesentation und demo am Mittwoch
---
-
-behandlung des verlierens von clusterheads
-rotation des clusterheads
-
+* TODO
+** rotation des clusterheads checken :JW:
+* Report Outline
+** Intro
+*** generic intro stuff
+** The Setting
+*** we are saving the trees!
+*** also, technical setting
+** Features (?)
+*** our assumptions and what we do with them
+** Algorithm
+*** reduction to graphs
+** Implementation
+*** Javascript!
+** Analysis
+*** screenshots!
+** Future Work
+*** aka known bugs and deficiencies
