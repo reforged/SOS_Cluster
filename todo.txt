@@ -8,11 +8,29 @@
 *** also, technical setting
 ** Features (?)
 *** our assumptions and what we do with them
-** Algorithm
+*** what scenarios does out algo cover
+** Algorithms and modelling
 *** reduction to graphs
+*** joining algo
+*** analysis of algos
 ** Implementation
 *** Javascript!
+*** aether
+*** sim environment
 ** Analysis
 *** screenshots!
+*** messages
 ** Future Work
 *** aka known bugs and deficiencies
+* presentation outline
+** intro and recap
+** improvements to last time
+*** reliability
+**** failure of clustermembers
+**** failure of clusterheads
+*** rotating clusterheads
+** demo
+*** messages
+*** delete and summon new motes
+*** and so on...
+*** rotation
