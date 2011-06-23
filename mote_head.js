@@ -61,14 +61,18 @@ $.extend( Mote.prototype, {
     },
 
     rotateHead: function() {
+        if ( !this.isClusterHead )
+            return;
+
+        if ( this.clusterMotes.length == 1 )
+            return;
+
         var i = Math.floor( Math.random() * this.clusterMotes.length );
-        console.log("i==", i);
         var newHead = this.clusterMotes[i];
         //special case
-        if( newHead.id == this.id )
+        if( newHead == this.id ) {
             newHead = this.clusterMotes[ (i+1) % this.clusterMotes.length ];
-
-        console.log( "rotating head to mote #", newHead );
+        }
 
         MoteList.send( this, {
             sender: this.id,
