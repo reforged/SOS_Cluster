@@ -58,7 +58,7 @@ MoteList = (function() {
             }
         }
     }
-    
+
     function mtypeToStr(type) {
         for ( var name in MTYPE )
             if (MTYPE[name] == type) return name;
@@ -171,6 +171,18 @@ MoteList = (function() {
         draw();
     }
 
+    function rotateHeads() {
+        var clusterHeads = [];
+        for ( var i = 0; i < motes.length; i++ )
+            if ( motes[i].mote.isClusterHead )
+                clusterHeads.push(motes[i].mote);
+
+        //ok this really sucks
+        for ( var i = 0; i < clusterHeads.length; i++ )
+            clusterHeads[i].rotateHead();
+        draw();
+    }
+
     return {
         register: register,
         drawAll: drawAll,
@@ -179,5 +191,6 @@ MoteList = (function() {
         getClusters: getClusters,
         killMoteAt: killMoteAt,
         newMoteAt: newMoteAt,
+        rotateHeads: rotateHeads,
     }
 }());

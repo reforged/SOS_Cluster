@@ -35,7 +35,6 @@ $.extend(Mote.prototype, {
             this.onMoteGone( msg );
             break;
         case MTYPE.ROTATE:
-            console.log("in mtype rotate");
             this.acceptClusterHead( msg );
             break;
         }
