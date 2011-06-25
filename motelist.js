@@ -123,6 +123,13 @@ MoteList = (function() {
         }
         return null;
     }
+    
+    function getMoteById(id) {
+        for ( var i = 0; i < motes.length; i++ )
+            if(motes[i].mote.id == id)
+                return motes[i];
+        return null;
+    }
 
     /* private */
     function killMote( mote ) {
@@ -168,7 +175,7 @@ MoteList = (function() {
         register: register,
         drawAll: drawAll,
         send: send,
-        getMote: function(id) { for ( var i = 0; i < motes.length; i++ ) if(motes[i].mote.id == id) return motes[i]; },
+        getMote: getMoteById,
         getClusters: getClusters,
         killMoteAt: killMoteAt,
         newMoteAt: newMoteAt,
