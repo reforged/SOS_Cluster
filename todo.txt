@@ -1,38 +1,41 @@
 * _TODO_
 ** TODO fix errors in protocol
-** DONE rotation des clusterheads checken				 :JW:
+*** ping?
+*** block?
+** DONE rotation des clusterheads checken :J:
 * Report Outline
-** Intro
+** Intro :J:R:
 *** generic intro stuff
-** The Setting
 *** we are saving the trees!
+** The Setting & Features  :J:
 *** also, technical setting
-** Features (?)
 *** our assumptions and what we do with them
 *** what scenarios does out algo cover
-** Algorithms and modelling
+** Algorithms and modelling :J:
 *** reduction to graphs
 *** joining algo
 *** analysis of algos
-** Implementation
+** Implementation :R:
 *** Javascript!
 *** aether
 *** sim environment
-** Analysis
+** Analysis :R:
 *** screenshots!
 *** messages
-** Future Work
+** Future Work :J:
 *** aka known bugs and deficiencies
 * presentation outline
 ** intro and recap :J: [5] 
 *** Aether and implementation details, additional assumptions
 ** improvements to last time [10]
 *** reliability
-**** failure of clustermembers :R:
-**** failure of clusterheads :J: 
+**** failure of clustermembers						  :R:
+**** failure of clusterheads						  :J:
 ***** slots
-*** rotating clusterheads :J:
+*** rotating clusterheads						  :J:
 ** demo [5]
-*** messages :R:
-*** delete and summon new motes :J:
-*** rotation :J:
+*** uncleared
+**** delete and summon new motes					  :J:
+**** rotation								  :J:
+*** cleared
+**** messages								  :R:
