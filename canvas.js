@@ -12,7 +12,15 @@ function init_canvas() {
         if ( !MoteList.killMoteAt(x,y) ) {
             MoteList.newMoteAt( x, y );
         }
-
+    });
+    $(document).keydown( function(e) {
+        if( e.which == 82 ) // r rotates all Heads
+            MoteList.rotateHeads();
+    });
+    $(document).keydown( function(e) {
+        if( e.which == 65 )
+            rotate = ++rotate % 2;
+        //        window.setTimeout( function() {, 30 );
     });
     body.appendChild(_canvas);
     canvas = _canvas.getContext('2d');
