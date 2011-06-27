@@ -15,6 +15,9 @@ function draw()
 }
 
 function init() {
+    if ( window.location.search == '?clear' )
+	numNodes = 0;
+
     for ( var i = 0; i < numNodes; i++ )
         window.setTimeout( function() { ( new Mote() ).start(); draw(); }, i*newMoteSlot*2*timeScale );
 }

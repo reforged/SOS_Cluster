@@ -1,5 +1,6 @@
-* TODO
-** rotation des clusterheads checken :JW:
+* _TODO_
+** TODO fix errors in protocol
+** DONE rotation des clusterheads checken				 :JW:
 * Report Outline
 ** Intro
 *** generic intro stuff
@@ -23,14 +24,15 @@
 ** Future Work
 *** aka known bugs and deficiencies
 * presentation outline
-** intro and recap
-** improvements to last time
+** intro and recap :J: [5] 
+*** Aether and implementation details, additional assumptions
+** improvements to last time [10]
 *** reliability
-**** failure of clustermembers
-**** failure of clusterheads
-*** rotating clusterheads
-** demo
-*** messages
-*** delete and summon new motes
-*** and so on...
-*** rotation
+**** failure of clustermembers :R:
+**** failure of clusterheads :J: 
+***** slots
+*** rotating clusterheads :J:
+** demo [5]
+*** messages :R:
+*** delete and summon new motes :J:
+*** rotation :J:
