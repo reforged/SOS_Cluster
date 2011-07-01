@@ -1,8 +1,3 @@
-* _TODO_
-** TODO fix errors in protocol
-*** ping?
-*** block?
-** DONE rotation des clusterheads checken :J:
 * Report Outline
 ** Intro :J:R:
 *** generic intro stuff
@@ -24,8 +19,15 @@
 *** messages
 ** Future Work :J:
 *** aka known bugs and deficiencies
-* presentation outline
-** intro and recap :J: [5] 
+* DONE _TODO_
+  CLOSED: [2011-06-29 Wed 13:37]
+** fix errors in protocol
+*** ping?
+*** block?
+** DONE rotation des clusterheads checken :J:
+* DONE presentation outline
+  CLOSED: [2011-06-29 Wed 13:37]
+** intro and recap :J: [5]
 *** Aether and implementation details, additional assumptions
 ** improvements to last time [10]
 *** reliability
@@ -33,9 +35,9 @@
 **** failure of clusterheads						  :J:
 ***** slots
 *** rotating clusterheads						  :J:
-** demo [5]
+** demo [5] :R:
 *** uncleared
-**** delete and summon new motes					  :J:
-**** rotation								  :J:
+**** delete and summon new motes
+**** rotation
 *** cleared
-**** messages								  :R:
+**** messages

@@ -1,0 +1,25 @@
+\section{Setting}
+Dieser Abschnitt beschreibt sowohl das fiktive Anwendungsgebiet, als auch die technische Arbeitsumgebung des Clusterbildungsalgorithmus.
+
+
+
+\subsection{Anwendungsgebiet}
+% Wir retten die W\"alder
+\textbf{toller einleitungsparagrapgh hier}
+
+Um Fr\"uhwarnsysteme f\"ur Waldbr\"ande zu verbessern k\"onnten z.B. kleine Sensoren eingesetzt werden, welche sich untereinander vernetzen um so gro\ss e Fl\"achen messen zu k\"onnen.
+In unserem Szenario seien Sensoren gegeben, die neben dem Messen von Metriken die f\"ur die Waldbranderkennung n\"otig sind, auch \"uber zwei Kommunikationsmethoden verf\"ugen. Eine Kommunikationsm\"oglichkeit zur Verst\"andigung mit anderen Sensoren in der unmittelbaren Umgebung, wie zum Beispiel W-Lan, und eine zum Senden der Messergebnisse an eine Senke, wie zum Beispiel GPRS.
+Von nun an, verwenden wir beispielhaft W-Lan f\"ur die Kommunikationmethode von Sensor zu Sensor, und GPRS f\"ur die Kommunikationsmethode von den Sensoren zu der Senke.
+Ziel dieses Projektes es nun, Sensoren in \emph{Cluster} zu organiseren.
+Cluster benuzten z.B. W-Lan um dem Sensoren zu erm\"oglichen Batterien zu sparen, indem die Messdaten bei manchen Sensoren gesammelt werden, und so nicht jeder Sensor seine Daten einzeln zu der Senke senden muss.
+Der Sensor der die Messdaten zur Senke sendet bezeichen wir als \emph{Clusterhead} .
+
+Die technischen Voraussetzungen f\"ur unseren Ansatz sind die Folgenden:
+\begin{itemize}
+\item Alle Sensoren sind sowohl mit W-Lan als auch mit GPRS ausgestattet.
+\item Die Sensoren gehen einer nach dem anderen an.
+\item Jeder Sensor in einem Cluster sollte Clusterhead werden k\"onnen.
+\end{itemize}
+
+Weiterhin gehen wir davon aus, dass Nachrichten nicht verloren gehen.
+Praktisch kann dies durch z.B. TCP sichergestellt werden.

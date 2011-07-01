@@ -1,0 +1,47 @@
+\section{Algorithmen}
+Dieser Abschnitt besch\"aftigt sich mit den entwickelten Algorithmen f\"ur das bilden von Clustern, die Ausfallsicherheit, und das Rotieren von Clusterheads.
+
+\subsection{Clusterbildung}
+Die Grundlage des Clusteringalgorithmus ist das Bilden von vollst\"andigen Graphen.
+Die Knoten des Graphen sind die Sensoren, und die Kanten die W-Lan Verbindungen in Reichweite.
+Dadurch reduziert sich die Clusterbildung auf das Cliquenproblem.
+
+Cluster werden durch folgendes Protokol gebildet:
+\begin{itemize}
+\item Falls sich ein Sensor aktiviert, so sendet sie zuerst eine Nachricht die nach vorhandenen Clustern sucht. Findest der Sensor keine vorhandenen Cluster, so bildet er selber einen.
+\item Alle schon vorhandenen Clusterheads antworten auf die Anfragen von neuen Motes. Diese Antwort enth\"allt einen Identifikator des Clusters und die Anzahl der Sensoren in dem Cluster.
+\item Der neue Sensor speichert alle Antworten der vorhanden Cluster, ordnet sie nach Gr\"o\ss e und versucht der Reihe nach einem der Cluster beizutreten, beginnend mit dem Kleinsten.
+\item Der erste Schritt zum Beitreten eines Clusters, das Senden eine Nachricht, auf die alle Mitglieder des Clusters mit ihrer Id antworten.
+\item Nach dem Ablaufen eines Timeouts, sendet der neue Sensor die Ids aller empfangenen Sensoren an den Clusterhead. Dies stellt sicher, dass der neue Sensor alle schon vorhandenen Mitglieder erreichen kann.
+\item Falls die Nachricht des neuen Sensors alle Ids des aktuellen Clusters entahlten, so sendet der Clusterhead dem neuen Sensor eine Nachricht mit der Best\"atigung, dass er neue Sensor dem Cluster beigetreten ist. Zus\"atzlich ordnet der Clusterhead dem neuen Sensor einen Slot zu. Dieser Slot wird n\"otig, falls der Clusterhead ausf\"allt.
+\item Falls die Nachricht des neuen Sensors nicht alle Ids enthalten sollte, so sendet der Server eine Ablehnung und der Client versucht dem n\"achst gr\"o\ss eren Cluster beizutreten.
+\end{itemize}
+
+\begin{figure}
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.8cm,
+                    semithick]
+  \tikzstyle{every state}=[fill=red,draw=none,text=white]
+
+  \node[initial,state] (A)                    {$join$};
+  \node[state]         (B) [above right of=A] {$new$};
+  \node[state]         (D) [below right of=A] {$CM?$};
+  \node[state]         (C) [below right of=B] {$member$};
+  \node[state]         (E) [below of=D]       {$CH$};
+
+  \path (A) edge              node {0,1,L} (B)
+            edge              node {1,1,R} (C)
+        (B) edge [loop above] node {1,1,L} (B)
+            edge              node {0,1,L} (C)
+        (C) edge              node {0,1,L} (D)
+            edge [bend left]  node {1,0,R} (E)
+        (D) edge [loop below] node {1,1,R} (D)
+            edge              node {0,1,R} (A)
+        (E) edge [bend left]  node {1,0,R} (A);
+\end{tikzpicture}
+\ref{fig:sm}
+\caption{State Machine des Cluster Protokolls}
+\end{figure}
+
+
+\subsection{Ausfallsicherheit}
+\subsection{Rotation der Clusterheads}
