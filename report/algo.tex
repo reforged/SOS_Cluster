@@ -41,7 +41,25 @@ Cluster werden durch folgendes Protokol gebildet:
 \ref{fig:sm}
 \caption{State Machine des Cluster Protokolls}
 \end{figure}
+\subsection{Ausfallsicherheit} \textbf{TODO}
+Aufgrund der erw\"ahnten Annahmen (TCP/IP, keine Bewegung der Motes, etc) gibt es nur zwei Ausfallszenarien die betrachtet werden m\"ussen, der Ausfall einer Membermote,  sowie der Ausfall des Clusterheads.
+Falls eine Membermote ausfallen sollte, so muss der zugeh\"orige Clusterhead dies merken und die Liste der zum Cluster zugeh\"origen Motes aktualisieren.
+Da Motes die dem Cluster betreten wollen Kontakt zu allen Motes nachweisen m\"ussen, die der Cluster als zum Cluster zugeh\"orig gespeichert hat, w\"urde der unbemerkte Ausfall einer Mote dazu f\"uhren, dass keine neuen Motes beitreten k\"onnen.
+In einem realen Szenario erkennt der Clusterhead das Ausfallen einer Membermote an dem Fehler von gesendeten Sensordaten. In der nie vorgestellten Simulation wird durch das L\"oschen direkt beim Server ein L\"oschevent.
 
+Der Ausfall von einem Clusterhead wird durch das Fehlen von Best\"atigungsnachrichten erkannt.
+Aufgrund unserer Annahme geschickt dies bei allen Membermotes gleichzeitig.
+Sobald eine Membermote den Ausfall des Clusterheads wahrnimmt, so wird der Cluster als tot angenommen.
+Die Mote wartet nun eine bestimmte Zeit $b$ und versucht dann einem neuen Cluster beizutreten.
+$b$ berechnet sich durch die upper bound f\"ur das Beitreten einer Mote zu einem Cluster multipliziert mit dem ``slot'' welcher der Mote beim Beitreten des jetzt toten Clusters zugewiesen wurde.
+Der slot ist ein streng monoton ansteigender pro Cluster eindeutiger Integer.
+Somit wird sichergestellt, dass die Membermote alle nacheinander in der urspr\"unglichen Beitrittsreihenfolge versuchen einem neuen Cluster beizutreten.
 
-\subsection{Ausfallsicherheit}
-\subsection{Rotation der Clusterheads}
+\subsection{Rotation der Clusterheads} \textbf{TODO}
+Die Rotation des Clusterhead ist der Prozess welcher von dem aktuellen Clusterhead ausgef\"uhrt wird, und einer Membermote die F\"uhrung des Clusters zuweist.
+Dieser Rotation kann ausgel\"ost werden von z.B. einem timeout oder dem Batteriestand.
+Beider Durchf\"uhrung der Rotation w\"ahlst der Clusterhead der neuen Cluster und sickt alle relevanten Daten an ihn.
+Die gesendeten Daten sind:
+slot\\
+Membermotes\\
+...\\
