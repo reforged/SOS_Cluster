@@ -1,4 +1,4 @@
-\section{Algorithmen}
+\section{Algorithmen} \label{sec:algo}
 Dieser Abschnitt besch\"aftigt sich mit den entwickelten Algorithmen f\"ur das bilden von Clustern, die Ausfallsicherheit, und das Rotieren von Clusterheads.
 
 \subsection{Clusterbildung}
@@ -17,30 +17,30 @@ Cluster werden durch folgendes Protokol gebildet:
 \item Falls die Nachricht des neuen Sensors nicht alle Ids enthalten sollte, so sendet der Server eine Ablehnung und der Client versucht dem n\"achst gr\"o\ss eren Cluster beizutreten.
 \end{itemize}
 
-\begin{figure}
-\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=2.8cm,
+\begin{figure*}
+\begin{tikzpicture}[->,>=stealth',shorten >=1pt,auto,node distance=4cm,
                     semithick]
-  \tikzstyle{every state}=[fill=red,draw=none,text=white]
+  \tikzstyle{every state}=[circle,fill=black!25, minimum size=5em]
 
-  \node[initial,state] (A)                    {$join$};
-  \node[state]         (B) [above right of=A] {$new$};
-  \node[state]         (D) [below right of=A] {$CM?$};
-  \node[state]         (C) [below right of=B] {$member$};
-  \node[state]         (E) [below of=D]       {$CH$};
+  \node[initial,state] (A)              {\shortstack{WhoIs\\There}};
+  \node[state]         (B) [right of=A] {\shortstack{List\\Members}};
+  \node[state]         (C) [right of=B] {\shortstack{Join\\Request}};
+  \node[state]         (D) [right of=C] {\shortstack{Cluster\\Member}};
+  \node[state]         (E) [below of=D] {\shortstack{Cluster\\Head}};
 
-  \path (A) edge              node {0,1,L} (B)
-            edge              node {1,1,R} (C)
-        (B) edge [loop above] node {1,1,L} (B)
-            edge              node {0,1,L} (C)
-        (C) edge              node {0,1,L} (D)
-            edge [bend left]  node {1,0,R} (E)
-        (D) edge [loop below] node {1,1,R} (D)
-            edge              node {0,1,R} (A)
-        (E) edge [bend left]  node {1,0,R} (A);
+  \path (A) edge [bend right=10]  node {Timeout} (E)
+            edge [bend left]  node {\shortstack{WhoIsThere/\\ReWhoIsThere}} (B)
+        (B) edge [bend left]  node {\shortstack{ListMembers/\\ReListMembers}} (C)
+        (C) edge [bend left]  node {\shortstack{JoinRequest/\\ReJoinRequest(true)}} (D)
+            edge [bend left] node {\shortstack{JoinRequest/\\ReJoinRequest(false)}} (B)
+        (D) edge [loop above] node {\shortstack{ListMembers/\\ReListMembers}} (D)
+            edge [bend left=10]  node {--/Rotate} (E)
+        (E) edge [bend left=10]  node {Rotate/--} (D)
+            edge [bend left=25] node {--/HeadGone} (A);
 \end{tikzpicture}
-\ref{fig:sm}
-\caption{State Machine des Cluster Protokolls}
-\end{figure}
+\label{fig:sm}
+\caption{State Machine des Cluster Protokolls \textbf{TODO}}
+\end{figure*}
 \subsection{Ausfallsicherheit} \textbf{TODO}
 Aufgrund der erw\"ahnten Annahmen (TCP/IP, keine Bewegung der Motes, etc) gibt es nur zwei Ausfallszenarien die betrachtet werden m\"ussen, der Ausfall einer Membermote,  sowie der Ausfall des Clusterheads.
 Falls eine Membermote ausfallen sollte, so muss der zugeh\"orige Clusterhead dies merken und die Liste der zum Cluster zugeh\"origen Motes aktualisieren.
