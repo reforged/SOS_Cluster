@@ -1,11 +1,22 @@
-\section{Future Work} \label{sec:fut}
-Jan will write about future work here.
-Jan will write about:\\
-Mehr als eine neue Moye gleichzeitig\\
-implementation als fsm\\
-ausfall von kanten\\
-cluster regroupen\\
-realitaetsnaehe abchecken mit bestehenden wifi protokollen\\
+\section{Future Work} \label{sec:futwork}
+Die zur Verf\"ugung gestellte Implementierung des beschriebenen Protokolls erf\"ullt die funktionalen Anforderungen im vollen Ma\ss e.
+Um aber den Einsatz des Protokolles realistischer zu machen, ist noch Arbeit an den Annahmen aus Abschnitt \ref{sec:setting} n\"otig.
+So w\"are s m\"oglich das Protokoll um die M\"oglichkeit zu erweitern mehreren Sensorknoten zu erlauben gleichzeitig einem Verband beizutreten.
+Dies w\"are zum Beispiel realisierbar, indem der Clusterhead bei einem schon laufenden join-Vorgang blockeirt, und der Sensorknoten wartet und danach erneut versucht dem Verband beizutreten.
 
-\section{Lessons Learned} \label{sec:les}
-??
+Zus\"atzlich m\"usste das Protokoll auf real benutze drahtlose Kommunikationprotokolle, die unter anderem kein Multicast unterst\"utzen, angepasst werden.
+
+\section{Fazit} \label{sec:conclusion}
+Dieser Bericht stellt ein Protokoll vor, das das Bilden von Verb\"anden von Sensorknoten erlaubt. Es unterst\"utzt neben dem Bilden von Verb\"anden auch den Ausfall von Knoten, und die Rotation des Verbandsleiters.
+Bereitgestellt wird zus\"atlich eine Implementation des Protokolls.
+
+%% Jan will write about future work here.
+%% Jan will write about:\\
+%% Mehr als eine neue Moye gleichzeitig\\
+%% implementation als fsm\\
+%% ausfall von kanten\\
+%% cluster regroupen\\
+%% realitaetsnaehe abchecken mit bestehenden wifi protokollen\\
+
+%% \section{Lessons Learned} \label{sec:les}
+%% ??

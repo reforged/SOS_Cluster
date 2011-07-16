@@ -1,23 +1,17 @@
-\section{Funktionale Anforderungen} \label{sec:func}
+\section{Funktionale Anforderungen} \label{sec:features}
 \begin{enumerate}
-\item \textbf{Clusterbildung nach dem beschriebenen Protokoll}
+\item \textbf{Implementation des beschriebenen Protokoll}
   \begin{itemize}
   \item \emph{Beschreibung:}\\
-    Die Implementation hat aus Mote-Objekten Cluster zu bilden. Die Bildung der Cluster hat nach dem in Abschnitt \ref{sec:algo} beschriebenen Algorithmus zu erfolgen.
-  \item \emph{Problembeschreibung:}\\
-    Prim\"ares Ziel des Projektes ist das Bilden von Clustern von Sensorknoten. Die Wichtigkeit dieses Punktes ist daher \emph{kritisch} und selbsterkl\"arend.
+    Das Protokoll bietet die Hauptfunktionalit\"at f\"ur das Anwendungszenario. Eine vollst\"andige und fehlerfreie Implementation ist daher \emph{kritisch}.
+  %\item \emph{Problembeschreibung:}\\
+
+  \item \emph{Siehe:}\\
+    Abschnitt \ref{sec:algo} f\"ur die Spezifikation des Protokolls.
   \item \emph{Abnahmekriterium:}\\
-    Diese Anforderung gelte als erf\"ullt, sobald die Mote-Objekte der Implementation bereitstellt, die das Protokoll zur Formung von Clustern vollst\"andig implementieren.
+    Dierse Anforderung gelte als erf\"ullt, wenn die Implementation folgendes leistet: das Bilden von Verb\"unden, das Behandeln von Ausf\"allen von Sensorknoten und die Rotation von Verbundsleitern anhand des genannten Protokolls.
   \end{itemize}
-\item \textbf{Rotation des Clusterheads nach dem beschriebenen Protokoll}
-  \begin{itemize}
-  \item \emph{Beschreibung:}\\
-    Die durch Punkt 1 gebildeten Cluster haben einen Clusterhead. Die Implementation hat den Algorithmus zur Rotation der Clusterheads, welcher auch in Abschnitt \ref{sec:algo} beschrieben ist, zu implementieren.
-  \item \emph{Problembeschreibung:}\\
-    Eine der Priorit\"aten bei dem Design des Protokolles zum Bilden von Clustern war die Austauschbarkeit der Clusterheads. Durch die Reduktion auf vollst\"andige Graphen ist die einfach zu erreichen. Die Rotation ist daher ein guter Showcase f\"ur die Vorz\"uge des Protokolls zum Bilden von Clustern.
-  \item \emph{Abnahmekriterium:}\\
-    Diese Anforderung gelte als erf\"ullt, wenn die gebildeten Cluster den Clusterhead nach dem spezifizierten Protokoll implentiert.
-  \end{itemize}
+
 \item \textbf{Kapselung der Komponenten}
   \begin{itemize}
   \item \emph{Beschreibung:}\\
@@ -37,5 +31,4 @@ Um eine m\"oglichst realistische Simulation zu sein, und um als echter Proof-Of-
   \item \emph{Abnahmekriterium:}\\
     Die Implementation muss eine graphische Benuzteroberfl\"ache haben, welche die simulierte Umgebung, samt Sensoreknoten darstellt. Gebildete Cluster m\"ussen farblich markiert sein. Zus\"atzlich soll man Sensorknoten hinzuf\"ugen und entfernen k\"onnen.
   \end{itemize}
-\item \textbf{Ausfallsicherheit?}
 \end{enumerate}
