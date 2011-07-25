@@ -1,6 +1,6 @@
 \section{Implementierung} \label{sec:impl}
 
-Um die dargelegten Algorithmen zu testen und zu demonstrieren, haben wir
+Um die dargelegten Algorithmen zu testen und zu präsentieren, haben wir
 eine Simulation entwickelt. Im folgenden wird zunächst die gewählte
 Entwicklungsplattform vorgestellt und begründet, anschließend werden die
 Implementierung des Äthers, der Sensorknoten und die Spezifika der
@@ -8,16 +8,16 @@ Simulations-Umgebung dargestellt.
 
 \subsection{JavaScript}
 
-Die Simulation ist in JavaScript implementiert; als
+Die Simulation ist in JavaScript implementiert. Als
 Entwicklungsplattform haben wir Webbrowser mit aktueller
 JavaScript-Engine (z.B. Googles V8 und Mozillas JägerMonkey) und
 Unterstützung für 2D-Grafikdarstellung mithilfe des canvas-Tags gewählt.
 
 Mit JavaScript als dynamisch typisierter, prototypenbasierter
-Skriptsprache lassen sich ohne große Deklarations-Overhead schnell
+Skriptsprache lassen sich ohne großen Deklarations-Overhead schnell
 sichtbare Ergebnisse produzieren. Mit dem neuen HTML5 Canvas Element
 steht eine einfach zu nutzende Zeichenfläche zur Verfügung und für alle
-gängigem Betriebssysteme gibt es Browser die die Simulation auführen
+gängigem Betriebssysteme gibt es Browser, welche die Simulation auführen
 können.
 
 Obwohl JavaScript eine klassenlose Sprache ist, werde ich ähnliche
@@ -26,25 +26,24 @@ Terminus ``Klasse'') verwenden.
 
 \subsection{Sensorknoten}
 
-Die simulierten Sensorknoten sind Instanze der Klasse ``Mote'', deren
+Die simulierten Sensorknoten sind Instanzen der Klasse ``Mote'', deren
 Implementierung sich über die Dateien mote.js, mote\_member.js und
 mote\_head.js erstreckt.
 
 Das in Abschnitt \ref{sec:algo} dargestellte Protokoll ist vollständig, aber
-zustandslos, in der Klasse Mote implememtiert.
+nicht als Finite-Sate-Machine, in der Klasse Mote implememtiert.
 
-Wird ein neuer simulierter Sensorknote von der Klasse Mote instanziiert,
-initialisiert der Konstruktur einige interne Variablen und registriert
+Wird ein neuer, simulierter Sensorknote von der Klasse Mote instanziiert,
+so initialisiert der Konstruktur einige interne Variablen und registriert
 den neuen Sensorknoten beim Äther; anschließend kann dieser gestartet
 (``eingeschaltet'') werden.
 
 \subsection{Äther}
 
-Die simulierten Sensorknoten kommunizieren untereinander nur über
-Nachrichten. Den (virtuellen) Versandt der Nachrichten übernimmt der
-simulierte Äther, implementiert als Modul
-\footnote{\url{http://yuiblog.com/blog/2007/06/12/module-pattern/}} ``MoteList'' in der
-Datei motelist.js.
+Die simulierten Sensorknoten (``Motes'') kommunizieren untereinander nur über
+Nachrichten. Den (virtuellen) Versand der Nachrichten ist implementiert im
+Modul \footnote{\url{http://yuiblog.com/blog/2007/06/12/module-pattern/}}
+``MoteList'' in der Datei motelist.js.
 
 Ähnlich dem Observer-Entwurfsmuster stellt MoteList eine Methode
 ``register'' bereit, die neuer Sensorknoten aufnimmt. Sie wird vom
@@ -80,9 +79,9 @@ Um die Geschwindigkeit der Simulation regulieren zu können sind alle
 relevanten Zeitfenster (also insbesondere Timeouts) an die globale
 Variable timeScale gekoppelt.
 
-\subsection{Grafische Oberfläche}
+\subsection{Graphische Oberfläche}
 
-Die grafische Oberfläche beschränkt sich im wesentlichen auf eine
+Die graphische Oberfläche beschränkt sich im wesentlichen auf eine
 ``Karte'' in der alle Motes, möglichen Verbindungen, sowie Cluster
 verzeichnet sind.
 
@@ -100,22 +99,22 @@ der Karte klickt. Klickt man einen vorhandenen Knoten an, wird dieser
 entfernt.
 
 Die Rotation der Cluster-Heads wird durch Drücken der Taste 'r'
-angestoßen. Die Taste 'a' schaltet die automatische Rotation der
+ausgelöst. Die Taste 'a' schaltet die automatische Rotation der
 Cluster-Heads in einem fixen Intervall ein oder aus.
 
 \section{Analyse} \label{sec:ana}
 
 Im folgenden wollen wir überprüfen, ob die Implementierung die in
 Abschnitt III formulierten Anforderungen erfüllt und die Performance der
-Simularion untersuchen.
+Simulation untersuchen.
 
 \subsection{Implementierung des Protokolls}
 
 Die Bildung von Clustern ist in den simulierte Sensorknoten gemäß der
 Spezifikation in Abschnitt \ref{sec:algo} implementiert. In der Simulation können
 Sensorknoten sowohl automatisch, als auch manuell platziert werden und
-die Knoten schließt sich dann zuverlässig einem Cluster an oder eröffnen
-ein neues.
+die Knoten schließen sich dann zuverlässig einem Cluster an oder eröffnen
+einen neuen.
 
 Entsprechend der Spezifikationen erkennen Sensorknoten das Verschwinden
 anderer Knoten nicht selber, reagieren aber wie im Protokoll festgelegt,
@@ -172,8 +171,8 @@ rechtzeitig alle Mitglieder eines Clusters auflisten können, somit der
 Beitritt zu vorhanden Clustern fehlschlägt und unnötig neue Cluster
 gegründet werden.
 
-Wie viele Sensorknoten ohne verspätete Zustellung von Nachtichten
-bewältigen kann, hängt stark von der gewählten
+Wieviele Sensorknoten ohne verspätete Zustellung von Nachtichten
+bewältigt werden können, hängt stark von der gewählten
 Simulationsgeschwindigkeit, sowie der der verwendeten JavaScript-Engine
 und natürlich der Rechenleistung eines CPU-Kerns ab. Ebenso beeinflusst
 die Verteilung der Sensorknoten und der Senderadius die Performance:
