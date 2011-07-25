@@ -1,9 +1,9 @@
-\section{Implementierung}
+\section{Implementierung} \label{sec:impl}
 
 Um die dargelegten Algorithmen zu testen und zu demonstrieren, haben wir
 eine Simulation entwickelt. Im folgenden wird zunächst die gewählte
 Entwicklungsplattform vorgestellt und begründet, anschließend werden die
-Implementierung des Äthers, der Motes und die Spezifika der
+Implementierung des Äthers, der Sensorknoten und die Spezifika der
 Simulations-Umgebung dargestellt.
 
 \subsection{JavaScript}
@@ -13,41 +13,72 @@ Entwicklungsplattform haben wir Webbrowser mit aktueller
 JavaScript-Engine (z.B. Googles V8 und Mozillas JägerMonkey) und
 Unterstützung für 2D-Grafikdarstellung mithilfe des canvas-Tags gewählt.
 
-Mit JavaScript als dynamisch-typisierte Skriptsprache lassen sich ohne
-große Deklartions-Overhead schnell sichtbare Ergebnisse produzieren. Mit
-dem neuen HTML5 Canvas Element steht eine einfach zu nutzende
-Zeichenfläche zur Verfügung und für alle gängigem Betriebssysteme gibt
-es Browser die die Simulation auführen können.
+Mit JavaScript als dynamisch typisierter, prototypenbasierter
+Skriptsprache lassen sich ohne große Deklarations-Overhead schnell
+sichtbare Ergebnisse produzieren. Mit dem neuen HTML5 Canvas Element
+steht eine einfach zu nutzende Zeichenfläche zur Verfügung und für alle
+gängigem Betriebssysteme gibt es Browser die die Simulation auführen
+können.
 
-\subsection{Motes}
+Obwohl JavaScript eine klassenlose Sprache ist, werde ich ähnliche
+Termini wie in anderen objektorientierten Sprachen (also auch den
+Terminus ``Klasse'') verwenden.
 
-Die simulierten Motes sind Instanze der Klasse Mote, deren
+\subsection{Sensorknoten}
+
+Die simulierten Sensorknoten sind Instanze der Klasse ``Mote'', deren
 Implementierung sich über die Dateien mote.js, mote\_member.js und
 mote\_head.js erstreckt.
 
-Das in Abschnitt ?? dargestellte Protokoll ist vollständig, aber
+Das in Abschnitt \ref{sec:algo} dargestellte Protokoll ist vollständig, aber
 zustandslos, in der Klasse Mote implememtiert.
 
-Wird eine neue Mote instanziert, initialisiert der Konstruktur einige
-interne Variablen, registriert die neue Mote dann beim Äther und kann
-dann gestartet (``eingeschaltet'') werden.
+Wird ein neuer simulierter Sensorknote von der Klasse Mote instanziiert,
+initialisiert der Konstruktur einige interne Variablen und registriert
+den neuen Sensorknoten beim Äther; anschließend kann dieser gestartet
+(``eingeschaltet'') werden.
 
 \subsection{Äther}
 
-Die Motes kommunizieren untereinander nur über Nachrichten. Den
-(virtuellen) Versandt der Nachrichten übernimmt der simulierte Äther,
-implementiert als Singleton ``MoteList'' in der Datei motelist.js.
+Die simulierten Sensorknoten kommunizieren untereinander nur über
+Nachrichten. Den (virtuellen) Versandt der Nachrichten übernimmt der
+simulierte Äther, implementiert als Modul
+(http://yuiblog.com/blog/2007/06/12/module-pattern/) ``MoteList'' in der
+Datei motelist.js.
 
 Ähnlich dem Observer-Entwurfsmuster stellt MoteList eine Methode
-``register'' bereit, die neuer Motes aufnimmt. Sie wird vom
+``register'' bereit, die neuer Sensorknoten aufnimmt. Sie wird vom
 Mote-Konstruktur aufgerufen. Zudem gibt es eine Methode ``send'', die
 den Versandt von Nachrichten anstößt.
 
 Beim Versandt wird zunächst die Position des Absenders abgerufen,
-anschließend wird die Distanz zu allen anderen registrierten Motes
-berechnet. Ist die Distanz nicht größer als ein festgelegter
-Senderadius, wird die Nachricht zugestellt indem sie der ``onRecv''
-Methode der jeweiligen Empfänger-Mote übergeben wird.
+anschließend wird die Distanz zu allen anderen registrierten
+Sensorknoten berechnet. Ist die Distanz nicht größer als ein
+festgelegter Senderadius, wird die Nachricht zugestellt indem sie der
+``onRecv'' Methode des jeweiligen Empfänger-Knotens übergeben wird. Der
+Absender erhält seine eigenen Nachrichten nicht.
+
+\subsection{Nachrichten}
+
+Bei den übergebene Nachrichten handelt es sich um JavaScript-Objekte.
+Sie sind nicht Instanzen einer bestimmten Klasse sondern nur des
+Basis-Typs Object, somit folgen sie auch keinem strikten Format.
+
+Alle Nachrichten haben jedoch per Konvention eine Eigenschaft ``type'',
+die Aufschluss über die Intention der Nachricht gibt (z.B. WHOISTHERE,
+JOINREQ, ROTATE) und somit auch die Kodierung der übrigen Eigenschaften
+impliziert.
+
+Über eine Netzwerk könnten die Nachrichten JSON-kodiert verschickt
+werden, in der Simulation verzichten wir jedoch zugunsten der
+Performance auf das Marshalling und Unmarshalling beim Absender
+respektive Empfänger.
+
+\subsection{Zeit}
+
+Um die Geschwindigkeit der Simulation regulieren zu können sind alle
+relevanten Zeitfenster (also insbesondere Timeouts) an die globale
+Variable timeScale gekoppelt.
 
 \subsection{Grafische Oberfläche}
 
@@ -55,18 +86,121 @@ Die grafische Oberfläche beschränkt sich im wesentlichen auf eine
 ``Karte'' in der alle Motes, möglichen Verbindungen, sowie Cluster
 verzeichnet sind.
 
-Die Zeichenfunktion ist dabei in der MoteList implementiert, da nur
-diese Zugriff auf die Positionen der Motes hat.
+Die Zeichenfunktion ist dabei im Modul MoteList implementiert, da nur
+darin Zugriff auf die Positionen der Sensorknoten möglich ist.
 
-Die Motes sind als kleine Quadrate auf der Karte dargestellt, oberhalb
-eines Cluser-Heads wird jeweils die ID des Clusters angezeigt. Zwischen
-Motes die nicht mehr als einen Senderadius voneinander entfernt sind,
-ist eine blasse Linie eingezeichnet. Zwischen zwei Motes die zu einem
-Cluster gehören, wird diese Linie farblich hervorgehoben.
+Die Sensorknoten sind als kleine Quadrate auf der Karte dargestellt,
+oberhalb eines Cluserheads wird jeweils die ID des Clusters angezeigt.
+Zwischen Sensorknoten die nicht mehr als einen Senderadius voneinander
+entfernt sind, ist eine blasse Linie eingezeichnet. Zwischen zwei Knoten
+die zu einem Cluster gehören, wird diese Linie farblich hervorgehoben.
 
-Weitere Motes werden hinzugefügt, wenn man auf eine freie Fläche der
-Karte klickt. Klickt man eine vorhandene Mote an, wird diese entfernt.
+Weitere Sensorknoten werden hinzugefügt, wenn man auf eine freie Fläche
+der Karte klickt. Klickt man einen vorhandenen Knoten an, wird dieser
+entfernt.
 
 Die Rotation der Cluster-Heads wird durch Drücken der Taste 'r'
-angestoßen. Die Taste 'a' schaltet eine automatische Rotation der
+angestoßen. Die Taste 'a' schaltet die automatische Rotation der
 Cluster-Heads in einem fixen Intervall ein oder aus.
+
+\section{Analyse} \label{sec:ana}
+
+Im folgenden wollen wir überprüfen, ob die Implementierung die in
+Abschnitt III formulierten Anforderungen erfüllt und die Performance der
+Simularion untersuchen.
+
+\subsection{Implementierung des Protokolls}
+
+Die Bildung von Clustern ist in den simulierte Sensorknoten gemäß der
+Spezifikation in Abschnitt \ref{sec:algo} implementiert. In der Simulation können
+Sensorknoten sowohl automatisch, als auch manuell platziert werden und
+die Knoten schließt sich dann zuverlässig einem Cluster an oder eröffnen
+ein neues.
+
+Entsprechend der Spezifikationen erkennen Sensorknoten das Verschwinden
+anderer Knoten nicht selber, reagieren aber wie im Protokoll festgelegt,
+sobald sie über den Ausfall informiert werden.
+
+Die Rotation des Clusterheads erfolgt bei Clustern mit mehreren Knoten
+ebenfalls nach Protokoll, jedoch wird (entsprechend der Spezifikation)
+nur nach externem Impuls rotiert und die Funktion des Clusterheads
+übernimmt ein zufällig ausgewählter, anderer Sensorknoten.
+
+\subsection{Kapselung der Komponenten}
+
+Eine grundlegende Kapselung der simulierten Sensorknoten untereinander
+besteht bereits darin, dass die Knoten jeweils als Instanzen der Klasse
+Mote realisiert sind.
+
+Referenzen auf die Sensorknoten (also die Instanzen der Klasse Mote)
+werden nur innerhalb des MoteList Modules gespeichert. Die Liste der
+Sensorknoten ist im Modul-Entwurfsmuster der MoteList durch den
+Variablen-Skopus geschützt und nur Funktionen dieses Moduls können
+darauf zugreifen. Der direkte Zugriff zwischen Sensorknoten ist somit
+per Design ausgeschlossen.
+
+Zusammen mit der Liste der Sensorknoten werden auch die Positionen der
+Knoten im Modul MoteList geschützt gespeichert. Damit sind alle
+relevanten Informationen der Simulationsumgebung vor den Sensorknoten
+abgekapselt.
+
+Die Kommunikation der Sensorknoten untereinander läuft somit
+ausschließlich über den Nachrichtenversand, der im Äther (Modul
+MoteList) implementiert ist. Nachrichten werden unter Berücksichtigung
+eines Senderadius nur an ein Subset aller Sensorknoten übermittelt.
+
+\subsection{Graphische Oberfläche}
+
+Wie in den funktionalen Anforderungen gefordert, wird in der
+Kartenansicht die simulierte Umgebung mit den darin enthaltenen
+Sensorknoten dargestellt. Cluster werden durch farbige Linien zwischen
+allen Knoten des Clusters als zusammenhängende Einheit erkennbar
+gemacht.
+
+Sensorknoten können hinzugefügt und entfernt werden.
+
+\subsection{Performance}
+
+Eine gute Performance war nicht Ziel dieser Simulation und ist im
+Ergebnis auch nur für Demonstrationszwecke ausreichend.
+
+Probleme treten auf, wenn die Nachrichten-Verteilung nicht schnell genug
+erfolgen kann und Timeouts der Sensorknoten ablaufen, bevor die
+Nachrichten zugestellt wurden. Das führt meistens dazu, dass
+Sensorknoten nicht von vorhandenen Clustern erfahren oder nicht
+rechtzeitig alle Mitglieder eines Clusters auflisten können, somit der
+Beitritt zu vorhanden Clustern fehlschlägt und unnötig neue Cluster
+gegründet werden.
+
+Wie viele Sensorknoten ohne verspätete Zustellung von Nachtichten
+bewältigen kann, hängt stark von der gewählten
+Simulationsgeschwindigkeit, sowie der der verwendeten JavaScript-Engine
+und natürlich der Rechenleistung eines CPU-Kerns ab. Ebenso beeinflusst
+die Verteilung der Sensorknoten und der Senderadius die Performance:
+Liegen die Sensorknoten stark geballt oder ist der Senderadius groß
+gewählt, werden alle Nachrichten von vielen Knoten empfangen und das
+System kommt schneller an seine Grenzen, als bei weit verteilten
+Sensorknoten und kleinen Senderadien.
+
+Bei den Standardeinstellungen (Karte mit 780x1248 Positionen,
+Senderadius von 15\% der Kartenhöhe, 150 Sensorknoten) werden alleine
+800 Nachrichten verschickt und rund 3000 bis 3300 Nachrichten empfangen.
+
+Platziert man dagegen nur 30 Knoten so dicht beieinander, dass sie ein
+einzelnes Cluster bilden, werden dabei bereits 551 Nachrichten
+verschickt und 10.294 Nachrichten empfangen. Zwingt man dieses Cluster
+zur Neubildung, indem man den Clusterhead löscht, entstehen dabei
+innerhalb von 5 Sekunden nochmal 519 Nachrichten die 14.533 mal
+empfangen werden.
+
+Die obenstehenden Versuche wurden auf einem Core2Duo Mobil-Prozessor mit
+1,87GHz Kerngeschwindigkeit in Googles Browser Chrome mit der
+V8-JavaScript-Engine durchgeführt. Während der Clusterneubildung wurde
+ein Prozessorkern für 5 Sekunden voll ausgelastet.
+
+Aufgrund der vielen Faktoren die die Performance beeinflussen soll hier
+auf eine weitere Analyse der Performance auf verschiedenen Systemem
+verzichtet werden.
+
+Mit den Standardeinstellungen und in einem aktuellen Browser sollte es
+problemlos möglich sein, die Simulation zu testen.
