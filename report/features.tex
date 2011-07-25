@@ -1,22 +1,22 @@
 \section{Funktionale Anforderungen} \label{sec:features}
 \begin{enumerate}
-\item \textbf{Implementation des beschriebenen Protokoll}
+\item \textbf{Implementierung des beschriebenen Protokoll}
   \begin{itemize}
   \item \emph{Beschreibung:}\\
-    Das Protokoll bietet die Hauptfunktionalit\"at f\"ur das Anwendungszenario. Eine vollst\"andige und fehlerfreie Implementation ist daher \emph{kritisch}.
+    Das Protokoll bietet die Hauptfunktionalit\"at f\"ur das Anwendungszenario. Eine vollst\"andige und fehlerfreie Implementierung ist daher \emph{kritisch}.
   %\item \emph{Problembeschreibung:}\\
 
   \item \emph{Siehe:}\\
     Abschnitt \ref{sec:algo} f\"ur die Spezifikation des Protokolls.
   \item \emph{Abnahmekriterium:}\\
-    Dierse Anforderung gelte als erf\"ullt, wenn die Implementation folgendes leistet: das Bilden von Verb\"unden, das Behandeln von Ausf\"allen von Sensorknoten und die Rotation von Verbundsleitern anhand des genannten Protokolls.
+    Diese Anforderung gelte als erf\"ullt, wenn die Implementierung folgendes leistet: das Bilden von Verb\"unden, das Behandeln von Ausf\"allen von Sensorknoten und die Rotation von Clusterheads anhand des genannten Protokolls.
   \end{itemize}
 
 \item \textbf{Kapselung der Komponenten}
   \begin{itemize}
   \item \emph{Beschreibung:}\\
-    Einzelne Systemkomponenten haben auf realistische Weise voneinander gekapselt sein.
-    Dies bezieht sich insbesondere, aber nicht aussschlie\ss lich auf den Motes zur Verf\"ugung stehenden Informationen, wie Lage, Informationen \"uber andere Sensorknoten, sowie Zustellung der Kommunikationen unter dem Motes durch einen von dem Sensorknoten unabh\"anigen Mechanismus.
+  Einzelne Systemponenten sind auf realistische Weise zu kapseln.
+  So dürfen Mote-Objekte untereinander nur durch Nachrichtenversenden kommunizieren, und keine Informationen über ihre Lage innerhalb  der Simulation erlangen können. 
   \item \emph{Problembeschreibung:}\\
 Um eine m\"oglichst realistische Simulation zu sein, und um als echter Proof-Of-Concept zu gelten, m\"ussen die simulierten Komponenten voneinander entkoppelt sein, also \"uber Schnittstellen kommunizieren, welche auch in einem Anwendungszenarion bestehen w\"urden.
   \item \emph{Abnahmekriterium:}\\
@@ -25,10 +25,10 @@ Um eine m\"oglichst realistische Simulation zu sein, und um als echter Proof-Of-
 \item \textbf{Graphische Oberfl\"ache}
   \begin{itemize}
   \item \emph{Beschreibung:}\\
-    Die Implementation hat eine graphische Benuzteroberfl\"ache zur Verf\"ugung zu stellen, welche die Simulation visualisiert. Die Bedienung der Oberfl\"ache hat ein sinnvolles Subset der Gesamtfunkionalit\"at zu implementieren.
+    Die Implementierung hat eine graphische Benuzteroberfl\"ache zur Verf\"ugung zu stellen, welche die Simulation visualisiert. Die Bedienung der Oberfl\"ache hat ein sinnvolles Subset der Gesamtfunkionalit\"at zu implementieren.
   \item \emph{Problembeschreibung:}\\
-    Um die Simulation zu visualisieren ist eine graphische Oberfl\"ache unentbehrlich. Sie dient zur demonstration des Proof-Of-Concepts. Das Hinzuf\"ugen und Entfernen von Motes erlaubt das Demonstrieren des vollen Umfanges der Funktionalit\"at.
+  Zur Präsentation der Implementierung ist eine graphische Oberfläche unentbehrlich.
   \item \emph{Abnahmekriterium:}\\
-    Die Implementation muss eine graphische Benuzteroberfl\"ache haben, welche die simulierte Umgebung, samt Sensoreknoten darstellt. Gebildete Cluster m\"ussen farblich markiert sein. Zus\"atzlich soll man Sensorknoten hinzuf\"ugen und entfernen k\"onnen.
+    Die Implementierung muss eine graphische Benuzteroberfl\"ache haben, welche die simulierte Umgebung, samt Sensoreknoten darstellt. Gebildete Cluster m\"ussen farblich markiert sein. Zus\"atzlich soll man Sensorknoten hinzuf\"ugen und entfernen k\"onnen.
   \end{itemize}
 \end{enumerate}

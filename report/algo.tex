@@ -1,8 +1,8 @@
 \section{Protokoll} \label{sec:algo}
-Dieser Abschnitt besch\"aftigt sich mit den entwickelten Algorithmen f\"ur das bilden von Clustern, die Ausfallsicherheit, und das Rotieren von Clusterheads.
+Dieser Abschnitt besch\"aftigt sich mit den entwickelten Algorithmen f\"ur das Bilden von Clustern, die Ausfallsicherheit, und das Rotieren von Clusterheads.
 
 \subsection{Clusterbildung}
-Die Grundlage des Bildes von Clustern ist das Finden von vollst\"andigen Sub-Graphen.
+Die Grundlage des Bildens von Clustern ist das Finden von vollst\"andigen Sub-Graphen.
 Die Knoten des Graphen sind die Sensorknoten, und die Kanten die Verbindungen zu anderen Sensorknoten in Reichweite.
 Dadurch reduziert sich die Clusterbildung auf das Cliquenproblem, ist aber aufgrund der getroffenen Annahmen nicht in $NP$.
 
@@ -11,13 +11,13 @@ Siehe Bild \ref{fig:sm} f\"ur die Finite-State-Machine des Protokolls.
 
 Cluster werden durch folgendes Protokol gebildet:
 \begin{enumerate}
-\item Falls sich ein Sensor aktiviert, so sendet sie zuerst eine Nachricht die nach vorhandenen Clustern sucht. Findest der Sensor keine vorhandenen Cluster, so bildet er selber einen.
-\item Alle schon vorhandenen Clusterheads antworten auf die Anfragen von neuen Knotens. Diese Antwort enth\"allt einen Identifikator des Clusters und die Anzahl der Sensoren in dem Cluster.
-\item Der neue Sensor speichert alle Antworten der vorhanden Cluster, ordnet sie nach Gr\"o\ss e und versucht der Reihe nach einem der Cluster beizutreten, beginnend mit dem Kleinsten.
-\item Der erste Schritt zum Beitreten eines Clusters, das Senden eine Nachricht, auf die alle Mitglieder des Clusters mit ihrer Id antworten.
+\item Sobald sich ein Sensor aktiviert, so sendet er zuerst eine Nachricht welche nach vorhandenen Clustern sucht. Findet der Sensor keine vorhandenen Cluster, so bildet er selber einen.
+\item Alle schon vorhandenen Clusterheads antworten auf die Anfragen von neuen Knoten. Diese Antwort enthält den Identifikator des Clusters und die Anzahl der Sensoren in dem Cluster.
+\item Der neue Sensor speichert alle Antworten der vorhanden Cluster, ordnet diese nach Gr\"o\ss e und versucht, beginnend mit dem Kleinsten, der Reihe nach einem der Cluster beizutreten.
+\item Der erste Schritt zum Beitreten eines Clusters ist das Senden einer Nachricht, auf die alle Mitglieder des Clusters mit ihrer Id antworten.
 \item Nach dem Ablaufen eines Timeouts, sendet der neue Sensor die Ids aller empfangenen Sensoren an den Clusterhead. Dies stellt sicher, dass der neue Sensor alle schon vorhandenen Mitglieder erreichen kann.
-\item Falls die Nachricht des neuen Sensors alle Ids des aktuellen Clusters entahlten, so sendet der Clusterhead dem neuen Sensor eine Nachricht mit der Best\"atigung, dass er neue Sensor dem Cluster beigetreten ist. Zus\"atzlich ordnet der Clusterhead dem neuen Sensor einen Slot zu. Dieser Slot wird n\"otig, falls der Clusterhead ausf\"allt.
-\item Falls die Nachricht des neuen Sensors nicht alle Ids enthalten sollte, so sendet der Server eine Ablehnung und der Client versucht dem n\"achst gr\"o\ss eren Cluster beizutreten.
+\item Falls die Nachricht des neuen Sensors alle Ids des aktuellen Clusters enthalten, sendet der Clusterhead dem neuen Sensor eine Nachricht mit der Best\"atigung, dass er erfolgreich dem Cluster beigetreten ist. Zus\"atzlich ordnet der Clusterhead dem neuen Sensor einen Slot zu. Der Slot wird für die Ausfallsicherheit benötigt, und in dem entsprechenden Teil erörtert.
+\item Enthällt die Nachricht des neuen Sensors nicht alle Ids, sendet der Server eine Ablehnung und der Client versucht dem n\"achst gr\"o\ss eren Cluster beizutreten.
 \end{enumerate}
 Bild \ref{fig:sd} ist ein UML-Sequenzdiagram welches einen erfolgreichen Clusterbeitritt mit einem weiterem Sensorknoten illustiert.
 
@@ -73,22 +73,22 @@ Bild \ref{fig:sd} ist ein UML-Sequenzdiagram welches einen erfolgreichen Cluster
 \end{figure*}
 
 \subsection{Ausfallsicherheit}
-Aufgrund der erw\"ahnten Annahmen (TCP/IP, keine Bewegung der Sensorknoten, etc) gibt es nur zwei Ausfallszenarien die betrachtet werden m\"ussen, der Ausfall des Clusterheads, sowie der Ausfall eines Sensorknotens der normales Mitglied in einem Cluster ist.
+Aufgrund der erw\"ahnten Annahmen (TCP/IP, keine Bewegung der Sensorknoten, etc) gibt es nur zwei Ausfallszenarien die betrachtet werden m\"ussen: der Ausfall des Clusterheads und der Ausfall eines Sensorknotens der normales Mitglied in einem Cluster ist.
 Falls ein normaler Sensorknoten ausfallen sollte, so muss der zugeh\"orige Clusterhead dies merken und die Liste der zum Cluster zugeh\"origen Sensorknoten aktualisieren.
 Da Sensorkntoen die dem Cluster betreten wollen Kontakt zu allen Sensorknoten nachweisen m\"ussen, die der Cluster als zum Cluster zugeh\"orig gespeichert hat, w\"urde der unbemerkte Ausfall eines Sensorknotens dazu f\"uhren, dass keine neuen Knoten beitreten k\"onnen.
-In einem realen Szenario erkennt der Clusterhead das Ausfallen eines normalen Knotens an dem Fehler von gesendeten Sensordaten. In der nie vorgestellten Simulation wird durch das L\"oschen direkt beim Server ein L\"oschevent.
+In einem realen Szenario erkennt der Clusterhead das Ausfallen eines normalen Knotens an dem Fehler von gesendeten Sensordaten. Die Simulation löst durch das L\"oschen eines Members direkt beim Clusterhead ein L\"oschevent aus.
 
 Der Ausfall von einem Clusterhead wird durch das Fehlen von Best\"atigungsnachrichten erkannt.
-Aufgrund unserer Annahme geschickt dies bei allen Knoten im Cluster gleichzeitig.
-Sobald ein Knoten den Ausfall des Clusterheads wahrnimmt, so wird der Cluster als tot angenommen.
+Aufgrund unserer Annahme geschieht dies bei allen Knoten im Cluster gleichzeitig.
+Sobald ein Knoten den Ausfall des Clusterheads wahrnimmt, wird der Cluster als tot angenommen.
 Der Knoten wartet nun eine bestimmte Zeit $b$ und versucht dann einem neuen Cluster beizutreten.
 $b$ berechnet sich durch die upper bound f\"ur das Beitreten eines Sensorknoten zu einem Cluster multipliziert mit dem ``slot'' welcher dem Knoten beim Beitreten des jetzt toten Clusters zugewiesen wurde.
 Der Slot ist ein streng monoton ansteigender, pro Cluster eindeutiger Integer.
 Somit wird sichergestellt, dass die Knoten alle nacheinander in der urspr\"unglichen Beitrittsreihenfolge versuchen einem neuen Cluster beizutreten.
 
 \subsection{Rotation der Clusterheads}
-Die Rotation des Clusterhead ist der Prozess welcher von dem aktuellen Clusterhead ausgef\"uhrt wird, und einem anderen Knoten die F\"uhrung des Clusters zuweist.
+Die Rotation des Clusterhead ist der Prozess, welcher von dem aktuellen Clusterhead ausgef\"uhrt wird, und einem anderen Knoten die F\"uhrung des Clusters zuweist.
 Dieser Rotation kann ausgel\"ost werden von z.B. einem timeout oder dem Batteriestand.
-Beider Durchf\"uhrung der Rotation w\"ahlst der Clusterhead der neuen Cluster und sickt alle relevanten Daten an ihn.
+Bei der Durchf\"uhrung der Rotation w\"ahlt der Clusterhead den neuen Clusterhead und schickt alle relevanten Daten an ihn.
 Die gesendeten Daten sind:
-Der Slot der als n\"achstes vergeben wird, eine Liste der Ids aller Knoten in dem Cluster, sowie die Id des Clusters.
+Der Slot der als n\"achstes vergeben wird, eine Liste der Ids aller Knoten im Cluster, sowie die Id des Clusters.
