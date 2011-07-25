@@ -6,13 +6,13 @@ Die Grundlage des Bildes von Clustern ist das Finden von vollst\"andigen Sub-Gra
 Die Knoten des Graphen sind die Sensorknoten, und die Kanten die Verbindungen zu anderen Sensorknoten in Reichweite.
 Dadurch reduziert sich die Clusterbildung auf das Cliquenproblem, ist aber aufgrund der getroffenen Annahmen nicht in $NP$.
 
-Motes ordnen sich nach der Aktivierung einem Cluster zu, und verlassen diesen nicht, bis der Cluster sich aufl\"ost. Es werden keine Optimierungen an bestehenden Clustern vorgenommen.
+Sensorknoten ordnen sich nach der Aktivierung einem Cluster zu, und verlassen diesen nicht, bis der Cluster sich aufl\"ost. Es werden keine Optimierungen an bestehenden Clustern vorgenommen.
 Siehe Bild \ref{fig:sm} f\"ur die Finite-State-Machine des Protokolls.
 
 Cluster werden durch folgendes Protokol gebildet:
 \begin{enumerate}
 \item Falls sich ein Sensor aktiviert, so sendet sie zuerst eine Nachricht die nach vorhandenen Clustern sucht. Findest der Sensor keine vorhandenen Cluster, so bildet er selber einen.
-\item Alle schon vorhandenen Clusterheads antworten auf die Anfragen von neuen Motes. Diese Antwort enth\"allt einen Identifikator des Clusters und die Anzahl der Sensoren in dem Cluster.
+\item Alle schon vorhandenen Clusterheads antworten auf die Anfragen von neuen Knotens. Diese Antwort enth\"allt einen Identifikator des Clusters und die Anzahl der Sensoren in dem Cluster.
 \item Der neue Sensor speichert alle Antworten der vorhanden Cluster, ordnet sie nach Gr\"o\ss e und versucht der Reihe nach einem der Cluster beizutreten, beginnend mit dem Kleinsten.
 \item Der erste Schritt zum Beitreten eines Clusters, das Senden eine Nachricht, auf die alle Mitglieder des Clusters mit ihrer Id antworten.
 \item Nach dem Ablaufen eines Timeouts, sendet der neue Sensor die Ids aller empfangenen Sensoren an den Clusterhead. Dies stellt sicher, dass der neue Sensor alle schon vorhandenen Mitglieder erreichen kann.
@@ -73,22 +73,22 @@ Bild \ref{fig:sd} ist ein UML-Sequenzdiagram welches einen erfolgreichen Cluster
 \end{figure*}
 
 \subsection{Ausfallsicherheit}
-Aufgrund der erw\"ahnten Annahmen (TCP/IP, keine Bewegung der Motes, etc) gibt es nur zwei Ausfallszenarien die betrachtet werden m\"ussen, der Ausfall einer Membermote,  sowie der Ausfall des Clusterheads.
-Falls eine Membermote ausfallen sollte, so muss der zugeh\"orige Clusterhead dies merken und die Liste der zum Cluster zugeh\"origen Motes aktualisieren.
-Da Motes die dem Cluster betreten wollen Kontakt zu allen Motes nachweisen m\"ussen, die der Cluster als zum Cluster zugeh\"orig gespeichert hat, w\"urde der unbemerkte Ausfall einer Mote dazu f\"uhren, dass keine neuen Motes beitreten k\"onnen.
-In einem realen Szenario erkennt der Clusterhead das Ausfallen einer Membermote an dem Fehler von gesendeten Sensordaten. In der nie vorgestellten Simulation wird durch das L\"oschen direkt beim Server ein L\"oschevent.
+Aufgrund der erw\"ahnten Annahmen (TCP/IP, keine Bewegung der Sensorknoten, etc) gibt es nur zwei Ausfallszenarien die betrachtet werden m\"ussen, der Ausfall des Clusterheads, sowie der Ausfall eines Sensorknotens der normales Mitglied in einem Cluster ist.
+Falls ein normaler Sensorknoten ausfallen sollte, so muss der zugeh\"orige Clusterhead dies merken und die Liste der zum Cluster zugeh\"origen Sensorknoten aktualisieren.
+Da Sensorkntoen die dem Cluster betreten wollen Kontakt zu allen Sensorknoten nachweisen m\"ussen, die der Cluster als zum Cluster zugeh\"orig gespeichert hat, w\"urde der unbemerkte Ausfall eines Sensorknotens dazu f\"uhren, dass keine neuen Knoten beitreten k\"onnen.
+In einem realen Szenario erkennt der Clusterhead das Ausfallen eines normalen Knotens an dem Fehler von gesendeten Sensordaten. In der nie vorgestellten Simulation wird durch das L\"oschen direkt beim Server ein L\"oschevent.
 
 Der Ausfall von einem Clusterhead wird durch das Fehlen von Best\"atigungsnachrichten erkannt.
-Aufgrund unserer Annahme geschickt dies bei allen Membermotes gleichzeitig.
-Sobald eine Membermote den Ausfall des Clusterheads wahrnimmt, so wird der Cluster als tot angenommen.
-Die Mote wartet nun eine bestimmte Zeit $b$ und versucht dann einem neuen Cluster beizutreten.
-$b$ berechnet sich durch die upper bound f\"ur das Beitreten einer Mote zu einem Cluster multipliziert mit dem ``slot'' welcher der Mote beim Beitreten des jetzt toten Clusters zugewiesen wurde.
-Der slot ist ein streng monoton ansteigender pro Cluster eindeutiger Integer.
-Somit wird sichergestellt, dass die Membermote alle nacheinander in der urspr\"unglichen Beitrittsreihenfolge versuchen einem neuen Cluster beizutreten.
+Aufgrund unserer Annahme geschickt dies bei allen Knoten im Cluster gleichzeitig.
+Sobald ein Knoten den Ausfall des Clusterheads wahrnimmt, so wird der Cluster als tot angenommen.
+Der Knoten wartet nun eine bestimmte Zeit $b$ und versucht dann einem neuen Cluster beizutreten.
+$b$ berechnet sich durch die upper bound f\"ur das Beitreten eines Sensorknoten zu einem Cluster multipliziert mit dem ``slot'' welcher dem Knoten beim Beitreten des jetzt toten Clusters zugewiesen wurde.
+Der Slot ist ein streng monoton ansteigender, pro Cluster eindeutiger Integer.
+Somit wird sichergestellt, dass die Knoten alle nacheinander in der urspr\"unglichen Beitrittsreihenfolge versuchen einem neuen Cluster beizutreten.
 
 \subsection{Rotation der Clusterheads}
-Die Rotation des Clusterhead ist der Prozess welcher von dem aktuellen Clusterhead ausgef\"uhrt wird, und einer Membermote die F\"uhrung des Clusters zuweist.
+Die Rotation des Clusterhead ist der Prozess welcher von dem aktuellen Clusterhead ausgef\"uhrt wird, und einem anderen Knoten die F\"uhrung des Clusters zuweist.
 Dieser Rotation kann ausgel\"ost werden von z.B. einem timeout oder dem Batteriestand.
 Beider Durchf\"uhrung der Rotation w\"ahlst der Clusterhead der neuen Cluster und sickt alle relevanten Daten an ihn.
 Die gesendeten Daten sind:
-Der slot der als n\"achstes vergeben wird, eine Liste der Ids aller Motes in dem Cluster, sowie die Id des Clusters.
+Der Slot der als n\"achstes vergeben wird, eine Liste der Ids aller Knoten in dem Cluster, sowie die Id des Clusters.

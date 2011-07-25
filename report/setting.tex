@@ -1,4 +1,4 @@
-B\section{Setting} \label{sec:setting}
+\section{Setting} \label{sec:setting}
 Dieser Abschnitt beschreibt zuerst das Anwendungsgebiet, und danach die Annahmen die bei dem Design des Protokolles gemacht wurden.
 W\"ahrend des Entwerfens des Protokolles, wurde nicht drauf geachtet das Anwendungszenario realistisch zu gestalten. Weder das Anwendungsszenarion noch Annahmen beruhen auf recherchierten Fakten.
 
@@ -6,19 +6,19 @@ W\"ahrend des Entwerfens des Protokolles, wurde nicht drauf geachtet das Anwendu
 Um Fr\"uhwarnsysteme f\"ur Waldbr\"ande zu verbessern k\"onnten z.B. kleine Sensoren eingesetzt werden, welche sich untereinander vernetzen um so gro\ss e Fl\"achen messen zu k\"onnen.
 In unserem Szenario seien Sensoren gegeben, die neben dem Messen von Metriken die f\"ur die Waldbranderkennung n\"otig sind, auch \"uber zwei Kommunikationsmethoden verf\"ugen. Eine Kommunikationsm\"oglichkeit zur Verst\"andigung mit anderen Sensoren in der unmittelbaren Umgebung, wie zum Beispiel W-Lan, und eine zum Senden der Messergebnisse an eine Senke, wie zum Beispiel GPRS.
 
-Ziel dieses Projektes es nun, Sensoren in \emph{Cluster} zu organiseren.
-Cluster benuzten Kurzstreckenkommunikation um dem Sensoren zu erm\"oglichen Batterien zu sparen, indem die Messdaten bei manchen Sensoren gesammelt werden, und so nicht jeder Sensor seine Daten einzeln zu der Senke senden muss.
-Der Sensor der die Messdaten zur Senke sendet bezeichen wir als \emph{Clusterhead} .
+Ziel dieses Projektes es nun, Sensorknoten in \emph{Cluster} zu organisieren.
+Cluster benuzten Kurzstrecken-Kommunikation um dem Sensoren zu erm\"oglichen Batterien zu sparen, indem die Messdaten bei manchen Sensoren gesammelt werden, und so nicht jeder Sensor seine Daten einzeln zu der Senke senden muss.
+Der Sensor der die Messdaten zur Senke sendet bezeichnen wir als \emph{Clusterhead}.
 
 \subsection{Annahmen}
 Die technischen Voraussetzungen f\"ur unseren Ansatz sind die Folgenden:
 \begin{itemize}
 \item Alle Sensorknoten sind baugleich, d.h. jeder Sensorknoten kann mit anderen Sensorknoten und der Senke kommunizieren.
-\item Keine zwei Sensorknoten versuchen gleichzeitg einem Cluster beizutreten. Dies wird Momentan daruch erreicht, dass alle sich Sensorknoten nacheinander aktivieren.
+\item Keine zwei Sensorknoten versuchen gleichzeitig einem Cluster beizutreten. Dies wird Momentan dadurch erreicht, dass alle sich Sensorknoten nacheinander aktivieren.
 \item Sensorknoten bewegen sich nicht.
-\item Keine Ausfälle von einzelnen Verbindungen. Ein Sensorknoten erreicht entweder alle Knoten seines Verbandes, oder keine.
+\item Keine Ausfälle von einzelnen Verbindungen. Ein Sensorknoten erreicht entweder alle Knoten seines Clusters, oder keine.
 \item Keine tempor\"aren Ausf\"alle. Ein Sensorknoten f\"allt entweder nicht oder komplett aus.
-\item Wenn ein Sensorknoten ausf\"allt, so merken es alle Sensorknoten im Verband gleichzeitig und mit Sicherheit, aber nicht zwingend instantan.
+\item Wenn ein Sensorknoten ausf\"allt, so merken es alle Sensorknoten im Cluster gleichzeitig und mit Sicherheit, aber nicht zwingend instantan.
 \end{itemize}
 
 \noindent Zus\"atzlich nehmen wir an, dass ein unterliegendes Protokoll existiert, das folgendes garantiert:
